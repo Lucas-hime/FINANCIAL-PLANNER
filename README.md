@@ -22,3 +22,6 @@ Se aparecer `✅ Integração Gemini OK!`, está tudo pronto para usar os recurs
 ## Se aparecer erro de pip
 
 O instalador agora usa `python -m pip` automaticamente. Se ainda falhar, reinstale o Python e marque **Add Python to PATH**.
+
+
+Se o comando `python` não funcionar no Windows, o instalador e o inicializador tentam automaticamente o launcher `py`.
