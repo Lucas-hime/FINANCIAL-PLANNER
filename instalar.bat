@@ -21,8 +21,8 @@ if %errorlevel% neq 0 (
 if not exist .env (
     copy .env.example .env
     echo.
-    echo IMPORTANTE: Abra o arquivo .env e cole sua chave Groq gratuita.
-    echo Acesse: https://console.groq.com para criar sua chave gratis.
+    echo IMPORTANTE: Abra o arquivo .env e cole sua chave Gemini gratuita.
+    echo Acesse: https://aistudio.google.com/apikey para criar sua chave grátis.
     echo.
 )
 if not exist data mkdir data

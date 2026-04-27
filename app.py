@@ -105,7 +105,7 @@ def health_for_month(month):
 
 @app.get('/')
 def index():
-    return render_template('index.html', groq_configured=bool(os.getenv('GROQ_API_KEY')))
+    return render_template('index.html', gemini_configured=bool(os.getenv('GEMINI_API_KEY')))
 
 
 @app.get('/api/dashboard')
