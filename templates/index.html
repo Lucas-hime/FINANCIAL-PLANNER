@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finanças Pessoais</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&family=Nunito:wght@300;400;500&family=Sora:wght@300;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <h1>Finanças Pessoais</h1>
+    <p class="sub">Seu dinheiro, organizado.</p>
+    <select id="monthSelector"></select>
+    <nav>
+      <a href="#" data-page="dashboard" class="active">📊 Dashboard</a>
+      <a href="#" data-page="renda">💰 Renda</a>
+      <a href="#" data-page="cartao">💳 Cartão</a>
+      <a href="#" data-page="investimentos">📈 Investimentos</a>
+      <a href="#" data-page="metas">🎯 Metas</a>
+      <a href="#" data-page="plano">🤖 Plano IA</a>
+      <a href="#" data-page="jornada">🗓️ Jornada</a>
+    </nav>
+    <p class="foot">Dados salvos localmente no seu PC 🔒</p>
+  </aside>
+
+  <main>
+    <div id="geminiBanner" class="banner info {{ '' if not gemini_configured else 'hidden' }}">Configure sua chave Gemini gratuita no arquivo .env para usar os recursos de IA. Veja o README para instruções.</div>
+    <section id="dashboard" class="page"></section>
+    <section id="renda" class="page hidden"></section>
+    <section id="cartao" class="page hidden"></section>
+    <section id="investimentos" class="page hidden"></section>
+    <section id="metas" class="page hidden"></section>
+    <section id="plano" class="page hidden"></section>
+    <section id="jornada" class="page hidden"></section>
+  </main>
+
+  <div id="loading" class="loading hidden"><div class="card">Carregando com carinho... ✨</div></div>
+  <div id="toasts"></div>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
