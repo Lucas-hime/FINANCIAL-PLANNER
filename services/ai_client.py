@@ -1,8 +1,6 @@
 import os
 from dataclasses import dataclass
 
-from google import genai
-
 
 MODEL_NAME = 'gemini-2.5-flash'
 
@@ -20,7 +18,7 @@ def _classify_error(exc: Exception) -> AIClientError:
     msg = str(exc).lower()
     if any(k in msg for k in ['429', 'quota', 'rate limit', 'resource exhausted']):
         return AIClientError('rate_limit', 'Seu limite gratuito da IA foi atingido agora. Tente novamente em alguns minutos.')
-    if any(k in msg for k in ['connection', 'timeout', 'network', 'dns', 'temporarily unavailable']):
+    if any(k in msg for k in ['connection', 'timeout', 'network', 'dns', 'temporarily unavailable', 'proxy']):
         return AIClientError('network', 'Não consegui falar com a IA por instabilidade de conexão. Tente novamente em instantes.')
     return AIClientError('unknown', 'Não consegui conversar com a IA agora. Seus dados continuam salvos com segurança.')
 
@@ -29,6 +27,11 @@ def generate_financial_response(prompt: str, system_instruction: str | None = No
     api_key = os.getenv('GEMINI_API_KEY')
     if not api_key:
         raise AIClientError('missing_api_key', 'Configure sua chave GEMINI_API_KEY no arquivo .env para usar os recursos de IA.')
+
+    try:
+        from google import genai
+    except Exception:
+        raise AIClientError('sdk_missing', 'A dependência google-genai não está instalada. Rode: pip install -r requirements.txt')
 
     try:
         client = genai.Client(api_key=api_key)

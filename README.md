@@ -7,3 +7,13 @@ Siga exatamente estes passos:
 3. Abra o arquivo `.env` e cole sua chave onde indicado.
 4. Dê dois cliques em `instalar.bat`.
 5. Dê dois cliques em `iniciar.bat` — o app abre sozinho no navegador.
+
+## Verificação rápida da integração Gemini
+
+Depois de preencher a chave no `.env`, rode:
+
+```bash
+python check_gemini_setup.py
+```
+
+Se aparecer `✅ Integração Gemini OK!`, está tudo pronto para usar os recursos de IA.
