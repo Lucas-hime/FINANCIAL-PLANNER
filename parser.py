@@ -48,7 +48,7 @@ def parse_pdf_statement(filepath):
                 amount = _to_amount(amount_raw)
                 date = _norm_date(date_raw)
                 if date and amount is not None and description:
-                    transactions.append({'date': date, 'description': description.strip(), 'amount': abs(amount)})
+                    transactions.append({'date': date, 'description': description.strip(), 'amount': amount})
 
             tables = page.extract_tables() or []
             for table in tables:
@@ -61,7 +61,7 @@ def parse_pdf_statement(filepath):
                     amount = _to_amount(row[-1])
                     description = str(row[1]).strip() if row[1] else ''
                     if date and description and amount is not None:
-                        transactions.append({'date': date, 'description': description, 'amount': abs(amount)})
+                        transactions.append({'date': date, 'description': description, 'amount': amount})
 
     unique = []
     seen = set()
@@ -97,5 +97,5 @@ def parse_csv_statement(filepath):
         description = str(row.get(desc_col) or '').strip()
         amount = _to_amount(row.get(amount_col))
         if date and description and amount is not None:
-            transactions.append({'date': date, 'description': description, 'amount': abs(amount)})
+            transactions.append({'date': date, 'description': description, 'amount': amount})
     return transactions

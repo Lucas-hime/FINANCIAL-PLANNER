@@ -174,12 +174,17 @@ def upload_statement():
     dst = UPLOAD_DIR / f"{datetime.now().timestamp()}_{filename}"
     f.save(dst)
 
-    if ext == '.pdf':
-        txs = parse_pdf_statement(dst)
-    elif ext == '.csv':
-        txs = parse_csv_statement(dst)
-    else:
-        return jsonify({'error': 'Formato não suportado. Use PDF ou CSV.'}), 400
+    try:
+        if ext == '.pdf':
+            txs = parse_pdf_statement(dst)
+        elif ext == '.csv':
+            txs = parse_csv_statement(dst)
+        else:
+            return jsonify({'error': 'Formato não suportado. Use PDF ou CSV.'}), 400
+    except ValueError as exc:
+        return jsonify({'error': str(exc)}), 400
+    except Exception:
+        return jsonify({'error': 'Não consegui ler seu arquivo agora. Confira se ele está íntegro e tente novamente.'}), 400
 
     categorized = categorize_transactions(txs)
     conn = get_conn()
@@ -348,7 +353,7 @@ def journey():
     for m in months:
         inc = conn.execute('SELECT salary, extra_income, investment_returns FROM income WHERE month=? ORDER BY id DESC LIMIT 1', (m,)).fetchone()
         tx = conn.execute('SELECT COALESCE(SUM(amount),0) AS total FROM transactions WHERE month=?', (m,)).fetchone()['total']
-        inv = conn.execute('SELECT COALESCE(SUM(current_value),0) AS total FROM investments').fetchone()['total']
+        inv = conn.execute("SELECT COALESCE(SUM(current_value),0) AS total FROM investments WHERE date IS NOT NULL AND substr(date,1,7) <= ?", (m,)).fetchone()['total']
         hs = conn.execute('SELECT score, label FROM health_snapshots WHERE month=? ORDER BY id DESC LIMIT 1', (m,)).fetchone()
         inc_total = sum((inc[k] or 0) for k in ['salary', 'extra_income', 'investment_returns']) if inc else 0
         out.append({'month': m, 'receita': inc_total, 'gastos': tx, 'saldo': inc_total - tx, 'investido': inv,
@@ -363,4 +368,7 @@ def health_score(month):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    debug_mode = os.getenv('FLASK_DEBUG', '0') == '1'
+    host = os.getenv('APP_HOST', '127.0.0.1')
+    port = int(os.getenv('PORT', '5000'))
+    app.run(debug=debug_mode, host=host, port=port)
