@@ -25,3 +25,5 @@ O instalador agora usa `python -m pip` automaticamente. Se ainda falhar, reinsta
 
 
 Se o comando `python` não funcionar no Windows, o instalador e o inicializador tentam automaticamente o launcher `py`.
+
+A instalação usa `pip --user`, então não precisa de permissões de administrador.

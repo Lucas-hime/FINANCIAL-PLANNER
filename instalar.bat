@@ -36,12 +36,13 @@ if %errorlevel% neq 0 (
     exit /b 1
 )
 
-echo Instalando dependencias...
-%PY_CMD% -m pip install --upgrade pip
-%PY_CMD% -m pip install -r requirements.txt
+echo Instalando dependencias no seu usuario (sem administrador)...
+%PY_CMD% -m pip install --user --upgrade pip
+%PY_CMD% -m pip install --user -r requirements.txt
 if %errorlevel% neq 0 (
     echo ERRO ao instalar dependencias.
     echo Tente executar novamente com internet ativa.
+    echo Se persistir, rode manualmente: %PY_CMD% -m pip install --user -r requirements.txt
     pause
     exit /b 1
 )
