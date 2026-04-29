@@ -1,8 +1,14 @@
 import os
 import sys
 
+from dotenv import load_dotenv
+
+from services.ai_client import AIClientError, generate_financial_response
+
 
 def main() -> int:
+    load_dotenv()
+
     key = os.getenv('GEMINI_API_KEY', '').strip()
     if not key:
         print('❌ GEMINI_API_KEY não foi encontrada. Abra o arquivo .env e preencha sua chave.')
@@ -10,12 +16,6 @@ def main() -> int:
 
     if len(key) < 20 or 'your_gemini_api_key_here' in key.lower():
         print('❌ A GEMINI_API_KEY parece vazia ou de exemplo. Cole uma chave válida no .env.')
-        return 1
-
-    try:
-        from services.ai_client import AIClientError, generate_financial_response
-    except Exception:
-        print('❌ Dependências da IA não encontradas. Rode: pip install -r requirements.txt')
         return 1
 
     try:
